@@ -12,7 +12,9 @@ class ukk_events {
         add_action('admin_menu', array( $this, 'import_page_add'));
         add_action('admin_init', array( $this, 'add_theme_caps'));
 
-        add_filter('archive_template', array(&$this, 'archive'));
+        //add_filter('archive_template', array(&$this, 'archive'));
+
+        add_action('admin_init', array( $this, 'add_meta_box'));
 
         if ( !wp_next_scheduled( 'refresh_tickster_events' ) ) {
             wp_schedule_event( time(), 'twicedaily', 'refresh_tickster_events' );
@@ -133,6 +135,34 @@ class ukk_events {
             $archive_template = CEXPERIS_DIR . 'redirect-jobcat.php';
         }
         return $archive_template;*/
+    }
+
+
+    /*
+    * We add meta boxes with ACF, and not here, but we need to insert some custom CSS
+    */
+    public function add_meta_box() {
+        add_meta_box('add_admin_css', 'OBS!', array( $this, 'add_admin_css'), 'event');
+    }
+    public function add_admin_css() {
+        global $post;
+        if (isset($post->ukk_tickster_id)) {
+        ?>
+        Ljusgrå datafält importeras löpande från Tickster och kan inte uppdateras manuellt.
+        <style>
+            div[data-name=call_to_action_link],
+            div[data-name=price_html],
+            div[data-name=performers_text],
+            div[data-name=occurrences] {
+                opacity: .2;
+            }
+        </style>
+        <?php } else { ?>
+        <style>
+            #add_admin_css { display: none; }
+        </style>
+    <?php
+        }
     }
 
 
