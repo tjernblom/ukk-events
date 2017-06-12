@@ -148,7 +148,7 @@ class ukk_events {
         global $post;
         if (isset($post->ukk_tickster_id)) {
         ?>
-        Ljusgrå datafält importeras löpande från Tickster och kan inte uppdateras manuellt.
+        Ljusgrå datafält importeras löpande från Tickster och ska inte uppdateras manuellt i Wordpress.
         <style>
             div[data-name=call_to_action_link],
             div[data-name=price_html],

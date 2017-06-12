@@ -21,8 +21,9 @@ define('UKK_EVENTS_PLUGIN',  __FILE__ );
 define('UKK_EVENTS_DIR', plugin_dir_path( __FILE__ ));
 define('UKK_EVENTS_VER', "0.0.1");
 
-require_once(UKK_EVENTS_DIR . 'includes/ukk_events_class.php'); 
-require_once(UKK_EVENTS_DIR . 'includes/ukk_tickster_import_class.php'); 
+require_once(UKK_EVENTS_DIR . 'includes/ukk_events_class.php');
+require_once(UKK_EVENTS_DIR . 'includes/ukk_events_acf.php');
+require_once(UKK_EVENTS_DIR . 'includes/ukk_tickster_import_class.php');
 
 $ukk_events = new ukk_events();
 
