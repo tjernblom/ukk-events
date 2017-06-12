@@ -85,6 +85,7 @@ class ukk_events {
             'show_ui'           => true,
             'show_admin_column' => true,
             'query_var'         => true,
+            'show_in_nav_menus' => true,
             'rewrite'           => array('slug' => 'kalendariekategori'),
         );
 
