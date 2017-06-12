@@ -12,9 +12,6 @@ class ukk_events {
         add_action('admin_menu', array( $this, 'import_page_add'));
         add_action('admin_init', array( $this, 'add_theme_caps'));
 
-        add_action('restrict_manage_posts', array(&$this, 'select_filter_posts_list') );
-        add_filter('parse_query', array(&$this, 'filter_posts_list') );
-
         add_filter('archive_template', array(&$this, 'archive'));
 
         if ( !wp_next_scheduled( 'refresh_tickster_events' ) ) {
@@ -22,57 +19,6 @@ class ukk_events {
         }
         add_action('refresh_tickster_events', array($this, 'refresh_tickster_events') );
     }
-
-    /**
-     * New filter in admin list
-     */
-
-    function select_filter_posts_list(){
-        /*
-        $type = 'post';
-        if (isset($_GET['post_type'])) {
-            $type = $_GET['post_type'];
-        }
-
-        if ($type == 'job'){
-            $values = array(
-                'Utvalda och ej utvalda' => '',
-                'Endast utvalda' => 'selected'
-            );
-            ?>
-            <select name="selected_jobs">
-            <?php
-                $current_v = isset($_GET['selected_jobs'])? $_GET['selected_jobs']:'';
-                foreach ($values as $label => $value) {
-                    printf
-                        (
-                            '<option value="%s"%s>%s</option>',
-                            $value,
-                            $value == $current_v? ' selected="selected"':'',
-                            $label
-                        );
-                    }
-            ?>
-            </select>
-            <?php
-        }
-        */
-    }
-
-    function filter_posts_list( $query ){
-        /*
-        global $pagenow;
-        $type = 'post';
-        if (isset($_GET['post_type'])) {
-            $type = $_GET['post_type'];
-        }
-        if ($type == 'job' && is_admin() && $pagenow=='edit.php' && isset($_GET['selected_jobs'])  && $_GET['selected_jobs'] == 'selected') {
-            $query->query_vars['meta_key'] = 'chef_job_top_job';
-            $query->query_vars['meta_value'] = 1;
-        }
-        */
-    }
-
 
 
     /**
@@ -259,9 +205,12 @@ class ukk_events {
      * Functions for getting all occurrances of an event (don't group by event)
      */
     public function query_occurrences_where( $where ) {
-        // We need LIKE in where
+        // We need some LIKEs in where
         $where = str_replace("meta_key = 'occurrences_%_", "meta_key LIKE 'occurrences_%_", $where);
         $where = str_replace("meta_value = '%", "meta_value LIKE '", $where);
+        // Only upcoming please
+        $where .= "AND CAST(wp_postmeta.meta_value AS DATE) >= '".date('Y-m-d')."'";
+        //wp_postmeta.meta_value 
         return $where;
     }
 

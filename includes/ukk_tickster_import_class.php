@@ -43,7 +43,7 @@ class ukk_tickster_import {
             'post_type' => 'event',
             'post_title' => (string) $itemData->name,
             'post_content' => html_entity_decode((string) $itemData->description),
-            'post_status' => 'publish',
+            'post_status' => 'draft',
             'comment_status' => 'closed',
             'ping_status' => 'closed'
         ));
