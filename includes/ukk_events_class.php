@@ -346,6 +346,40 @@ class ukk_events {
 
 
     /**
+     * Get one event with same meta fields as get_events(). Returns
+     * - occurrence_startdate
+     * - occurrence_enddate
+     * - occurrence_url
+     * - venue_text
+     * - call_to_action_text
+     */
+    public function get_event ( $post_id ) {
+
+        $this_post = get_post($post_id);
+
+        $next_occurrence_found = false;
+
+        while ( have_rows('occurrences', $post_id) && !$next_occurrence_found ) {
+            the_row();
+
+            $this_post->occurrence_startdate = get_sub_field('startdate');
+            $this_post->occurrence_enddate = get_sub_field('enddate');
+            $this_post->occurrence_url = get_sub_field('url');
+
+            if (strtotime($this_post->occurrence_startdate) > time()) {
+                 $next_occurrence_found = true;
+            }
+        }
+
+        $this_post->venue_text = get_field('venue_text', $post_id);
+        $this_post->call_to_action_text = get_field('call_to_action_text', $post_id);
+
+        return $this_post;
+
+    }
+
+
+    /**
      * Get event categories
      * - Accepts args array for WP function get_terms()
      * - To order by manual sort value in admin use
